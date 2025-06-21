@@ -1,0 +1,32 @@
+# This is a Databricks asset bundle definition for Batch.
+# See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
+bundle:
+  name: Batch
+  uuid: f4ab7252-298b-44a3-a472-73e5112f2f1a
+
+variables:
+  shared_cluster_id:
+    description: ID of the shared compute cluster
+    type: string
+
+include:
+  - resources/*.yml
+  - resources/*/*.yml
+
+targets:
+  dev:
+    mode: development
+    default: true
+    workspace:
+      host: https://adb-4156850341579943.3.azuredatabricks.net
+    variables:
+      shared_cluster_id: "1210-121618-nzyil54z"
+
+  prod:
+    mode: production
+    workspace:
+      host: https://adb-4156850341579943.3.azuredatabricks.net
+      root_path: /Workspace/DAB_TEST/${bundle.name}/${bundle.target}
+    permissions:
+      - user_name: ivaylo.ovcharov@adastragrp.com
+        level: CAN_MANAGE

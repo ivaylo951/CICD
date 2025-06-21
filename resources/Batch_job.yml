@@ -1,0 +1,24 @@
+resources:
+  jobs:
+    Batch:
+      name: Batch
+
+      tasks:
+        - task_key: bronze_layer
+          notebook_task:
+            notebook_path: ../src/Bronze layer.ipynb
+          existing_cluster_id: ${var.shared_cluster_id}
+
+        - task_key: silver_layer
+          depends_on:
+            - task_key: bronze_layer
+          notebook_task:
+            notebook_path: ../src/Silver layer.ipynb
+          existing_cluster_id: ${var.shared_cluster_id}
+
+        - task_key: gold_layer
+          depends_on:
+            - task_key: silver_layer
+          notebook_task:
+            notebook_path: ../src/Gold layer.ipynb
+          existing_cluster_id: ${var.shared_cluster_id}
